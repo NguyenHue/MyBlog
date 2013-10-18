@@ -14,7 +14,7 @@ describe "Authentication" do
       it { should have_selector('div.alert.alert-error', text: 'Invalid') }
     end
 
-    describe "with valid information" do
+    ddescribe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
       before { sign_in user }
 
@@ -22,11 +22,14 @@ describe "Authentication" do
       it { should have_link('Users',       href: users_path) }
       it { should have_link('Profile',     href: user_path(user)) }
       it { should have_link( 'Settings',   href: edit_user_path(user)) }
+      it { should have_link('Settings',    href: edit_user_path(user)) }
       it { should have_link('Sign out',    href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
     end
   end
  describe "authorization" do
+
+  describe "authorization" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
@@ -96,6 +99,10 @@ describe "Authentication" do
         end
       end
     describe "as wrong user" do
+      end
+    end
+  end
+  describe "as wrong user" do
       let(:user) { FactoryGirl.create(:user) }
       let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
       before { sign_in user, no_capybara: true }
@@ -121,6 +128,9 @@ describe "Authentication" do
         before { delete user_path(user) }
         specify { expect(response).to redirect_to(root_url) }
       end
+    end
+  end
+end
     end
   end
 end

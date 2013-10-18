@@ -30,6 +30,16 @@ class UsersController < ApplicationController
     flash[:success] = "User destroyed."
     redirect_to users_url
   end
+  
+ def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Profile updated"
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
 
   def new
   	@user = User.new
@@ -61,7 +71,6 @@ class UsersController < ApplicationController
   end
 
    private
-
     def user_params
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
@@ -80,8 +89,8 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
+
     def admin_user
-      redirect_to(root_url) unless current_user.admin?
+      redirect_to signin_url, notice: "Please sign in." unless signed_in?
     end
-  
 end
